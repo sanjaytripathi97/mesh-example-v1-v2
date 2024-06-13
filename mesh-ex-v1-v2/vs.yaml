@@ -1,0 +1,50 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: httpd-vs
+spec:
+  hosts:
+    - "httpd-mesh.apps.killer.xxxx.xxxx.xxxx.xxxx.com"
+  gateways:
+    - httpd-gw
+  http:
+    - match:
+      - uri:
+          prefix: "/v1"
+      rewrite:
+        uri: '/'
+      route:
+      - destination:
+           host: httpd-v1
+           port:
+             number: 8080
+    - match:
+      - uri:
+          prefix: "/v2"
+      rewrite:
+        uri: '/'
+      route:
+      - destination:
+           host: httpd-v2
+           port:
+             number: 8080
+    - match:
+      - uri:
+          prefix: "/v3"
+      rewrite:
+        uri: '/'
+      route:
+      - destination:
+           host: kuard-blue
+           port:
+             number: 8080
+    - match:
+      - uri:
+          prefix: "/v4"
+      rewrite:
+        uri: '/'
+      route:
+      - destination:
+           host: webserver-header
+           port:
+             number: 8080

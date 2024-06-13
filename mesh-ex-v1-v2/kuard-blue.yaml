@@ -1,0 +1,52 @@
+cat kuard-blue.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kuard
+    version: blue
+  name: kuard-blue-v3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kuard
+      version: blue
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+      creationTimestamp: null
+      labels:
+        app: kuard
+        version: blue
+    spec:
+      containers:
+      - image: gcr.io/kuar-demo/kuard-amd64:blue
+        name: kuar-amd64
+        ports:
+        - containerPort: 8080
+        resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: kuard
+    version: blue
+  name: kuard-blue
+spec:
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: kuard
+    version: blue
+  sessionAffinity: None
+  type: ClusterIP
