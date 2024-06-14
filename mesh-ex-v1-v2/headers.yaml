@@ -27,7 +27,7 @@ spec:
         deployment: webserver-header
     spec:
       containers:
-      - image: quay.io/rhn_support_satripat/webserver-headers:v1
+      - image: quay.io/rhn_xxxx_satripat/webserver-headers:v1
         imagePullPolicy: Always
         name: webserver-header
         ports:
